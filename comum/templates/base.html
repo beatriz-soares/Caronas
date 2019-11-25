@@ -129,10 +129,10 @@
           <ul class="sidebar-menu live-search-list">
             <!-- Optionally, you can add icons to the links -->
             <li class="{% block index %}{% endblock %}"><a href="{% url 'comum:index' %}"><i class="fa fa-link"></i> <span>Início</span></a></li>
-            <li class="{% block novo_ponto %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Novo Ponto de Interesse</span></a></li>
+            <li class="{% block novo_ponto %}{% endblock %}"><a href="{% url 'comum:novo_ponto' %}"><i class="fa fa-link"></i> <span>Novo Ponto de Interesse</span></a></li>
             <li class="{% block novo_rota %}{% endblock %}"><a href="{% url 'comum:nova_rota' %}"><i class="fa fa-link"></i> <span>Nova Rota de Interesse</span></a></li>
-            <li class="{% block novo_depoimento %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Pedir Carona</span></a></li>
-            <li class="{% block nova_carona %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Oferecer Carona</span></a></li>
+            <li class="{% block novo_pedido_carona %}{% endblock %}"><a href="{% url 'comum:novo_pedido_carona' %}"><i class="fa fa-link"></i> <span>Pedir Carona</span></a></li>
+            <li class="{% block novo_oferecer_carona %}{% endblock %}"><a href="{% url 'comum:novo_oferecer_carona' %}"><i class="fa fa-link"></i> <span>Oferecer Carona</span></a></li>
             {% if request.user.is_superuser %}
             <li class="{% block tipos_depoimento %}{% endblock %}"><a href="{% url 'comum:tipos_depoimento' %}"><i class="fa fa-link"></i> <span>Tipos de depoimento</span></a></li>
             {% endif %}

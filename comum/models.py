@@ -14,14 +14,14 @@ class Usuario(User):
 
 class PontosDeInteresse(models.Model):
     localizacao = models.CharField(max_length=250)
-    horario = models.DateTimeField(auto_now=True, auto_now_add=False)
+    horario = models.TimeField()
     usuario = models.ManyToManyField(Usuario)
 
 
 class RotasDeInteresse(models.Model):
     localizacao_atual = models.CharField(max_length=250)
     localizacao_final = models.CharField(max_length=250)
-    horario = models.DateTimeField()
+    horario = models.TimeField()
     usuario = models.ManyToManyField(Usuario)
     
 
@@ -29,7 +29,7 @@ class Veiculo(models.Model):
     placa = models.CharField(max_length=7)
     cor = models.CharField(max_length=20)
     modelo = models.CharField(max_length=20)
-    ano = models.IntegerField(validators=[MinValueValidator(2008), MaxValueValidator(2020)])
+    ano = models.IntegerField(validators=[MinValueValidator(1900), MaxValueValidator(2020)])
     
 
 class Motorista(models.Model):
@@ -39,10 +39,10 @@ class Motorista(models.Model):
 
 
 class Carona(models.Model):
-    ponto_embarque = models.CharField(max_length=30)
-    motorista = models.ForeignKey(Motorista, on_delete=models.CASCADE)
-    destino = models.TextField()
-    preco = models.FloatField()
+    ponto_embarque = models.CharField(max_length=250)
+    motorista = models.ForeignKey(Motorista, on_delete=models.CASCADE, null=True, blank=True)
+    destino = models.CharField(max_length=250)
+    data = models.DateField()
 
 
 class Passageiro(models.Model):

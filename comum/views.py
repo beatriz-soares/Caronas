@@ -61,8 +61,7 @@ def login_aplicacao(request):
 
         if form.is_valid():
             login(request, form.get_user())
-            # if request.user.is_superuser:
-            #     return HttpResponseRedirect(reverse('administracao:index'))
+            # request.session["tipo"] = "Motorista"
 
             return HttpResponseRedirect(reverse('comum:index'))
         else:
@@ -99,6 +98,55 @@ def nova_rota(request):
             messages.warning(request, "Veja os erros")
 
     return render(request, 'nova_rota.html', {"form":form})
+
+
+def novo_ponto(request):
+    form = NovoPontoForm(request.POST or None)
+    if request.POST:
+        if form.is_valid():
+            # Fazer alguma coisa
+            ponto = form.save()
+            ponto.usuario.add(Usuario.objects.get(pk=request.user.id))
+            ponto.save()
+            return HttpResponseRedirect(reverse('comum:index'))
+        else:
+            print form.errors
+            messages.warning(request, "Veja os erros")
+
+    return render(request, 'novo_ponto.html', {"form":form})
+
+
+def novo_pedido_carona(request):
+    form = CaronaForm(data=request.POST or None, usuario=Usuario.objects.get(pk=request.user.id))
+    if request.POST:
+        if form.is_valid():
+            # Fazer alguma coisa
+            carona = form.save()
+            passageiro = Passageiro.objects.get(usuario=Usuario.objects.get(pk=request.user.id))
+            passageiro.carona.add(carona)
+            return HttpResponseRedirect(reverse('comum:index'))
+        else:
+            print form.errors
+            messages.warning(request, "Veja os erros")
+
+    return render(request, 'novo_pedido_carona.html', {"form":form})
+
+
+def novo_oferecer_carona(request):
+    form = CaronaForm(data=request.POST or None, usuario=Usuario.objects.get(pk=request.user.id))
+    if request.POST:
+        if form.is_valid():
+            # Fazer alguma coisa
+            carona = form.save()
+            passageiro = Passageiro.objects.get(usuario=Usuario.objects.get(pk=request.user.id))
+            passageiro.carona.add(carona)
+            return HttpResponseRedirect(reverse('comum:index'))
+        else:
+            print form.errors
+            messages.warning(request, "Veja os erros")
+
+    return render(request, 'novo_pedido_carona.html', {"form":form})
+
 
 def tipos_depoimento(request):
     if request.user.is_superuser:

@@ -17,16 +17,16 @@
   href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
 
 {% endblock %}
-{% block novo_rota %}active{% endblock %}
+{% block novo_oferecer_carona %}active{% endblock %}
 {% block breadcrumb %}
   <section class="content-header">
     <h1>
-      Cadastrar Rota
-      <small>Cadastre uma rota que você quer oferecer/pedir carona.</small>
+      Cadastrar Pedido de Carona
+      <small>Cadastre uma oferta de carona.</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> Início</a></li>
-        <li class="active">Nova Rota</li>
+        <li class="active">Nova oferta de carona</li>
     </ol>
   </section>
 {% endblock %}
@@ -81,15 +81,11 @@
             lon: -35.211
                 });
 
-        $('#id_localizacao_atual').typeahead(null, {
-            source: engine.ttAdapter(),
-            displayKey: 'description'
-        });
-        $('#id_localizacao_final').typeahead(null, {
+        $('#id_destino').typeahead(null, {
             source: engine.ttAdapter(),
             displayKey: 'description'
         });
 
-      $("#id_horario").mask("99:99");
+      $("#id_data").mask("99/99/9999");
 </script>
 {% endblock %}
