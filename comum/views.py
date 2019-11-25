@@ -42,11 +42,15 @@ def index(request):
 
 def novo_usuario(request):
     form = NovoUserForm(request.POST or None)
-    if request.POST and form.is_valid():
-        depoimento = form.save()
-        messages.success(request, "Novo usuário cadastrado! Você já pode fazer login")
-        return HttpResponseRedirect(reverse('comum:index'))
-
+    print(request.POST)
+    if request.POST:
+        if form.is_valid():
+            depoimento = form.save()
+            messages.success(request, "Novo usuário cadastrado! Você já pode fazer login")
+            return HttpResponseRedirect(reverse('comum:index'))
+        else:
+            messages.warning(request, "Verifique os campos com erro")
+    
     return render(request, "novo_usuario.html", {"form":form})
 
 

@@ -17,6 +17,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'comum/css/AdminLTE.min.css' %}">
+  <style type='text/css'>
+    ul{
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .show, .hide {float: left; display: inline-block;}
+  .defaut, .hide {margin: 0px; padding: 0px; width: 40px; float: left; text-align: center; }
+  .langue {  width: 60px; }
+  .defaut {display: inline-block;  }
+  .hide {display: none; }
+
+  </style>
 </head>
 
 <body class="hold-transition login-page">
@@ -45,7 +58,26 @@
       {{ form.username.label_tag }}
       <div class="form-group has-feedback">
         {{ form.username|add_css_class:'form-control' }}
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+
+      {{ form.email.label_tag }}
+      <label for="id_email">Email:</label>
+      <div class="form-group has-feedback">
+        {{ form.email|add_css_class:'form-control' }}
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+
+      {{ form.telefone.label_tag }}
+      <div class="form-group has-feedback">
+        {{ form.telefone|add_css_class:'form-control' }}
+        <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
+      </div>
+
+      {{ form.cidade.label_tag }}
+      <div class="form-group has-feedback">
+        {{ form.cidade|add_css_class:'form-control' }}
+        <span class="glyphicon glyphicon-globe form-control-feedback"></span>
       </div>
 
       {{ form.password1.errors }}
@@ -59,6 +91,45 @@
       <div class="form-group has-feedback">
         {{ form.password2|add_css_class:'form-control' }}
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+
+      {{ form.tipo.errors }}
+      <div class="form-group">
+        {{ form.tipo }}
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+
+      <div class="hide veiculo">
+        <label>Veículo</label>
+        <br>
+        {{ form.cnh.label_tag }}
+        <div class="form-group has-feedback">
+          {{ form.cnh|add_css_class:'form-control' }}
+          <span class="glyphicon glyphicon-credit-card form-control-feedback"></span>
+        </div>
+        <label for="id_modelo_veiculo">Informe o modelo do seu veículo:</label>
+        <div class="form-group has-feedback">
+          {{ form.modelo_veiculo|add_css_class:'form-control' }}
+          <span class="glyphicon glyphicon-file form-control-feedback"></span>
+        </div>
+
+        <label for="id_placa_veiculo">Informe a placa do seu veículo:</label>
+        <div class="form-group has-feedback">
+          {{ form.placa_veiculo|add_css_class:'form-control' }}
+          <span class="glyphicon glyphicon-file form-control-feedback"></span>
+        </div>
+
+        <label for="id_cor_veiculo">Informe a cor do seu veículo:</label>
+        <div class="form-group has-feedback">
+          {{ form.cor_veiculo|add_css_class:'form-control' }}
+          <span class="glyphicon glyphicon-file form-control-feedback"></span>
+        </div>
+
+        <label for="id_ano_veiculo">Informe o ano do seu veículo:</label>
+        <div class="form-group has-feedback">
+          {{ form.ano_veiculo|add_css_class:'form-control' }}
+          <span class="glyphicon glyphicon-file form-control-feedback"></span>
+        </div>
       </div>
 
       <div class="row">
@@ -75,6 +146,22 @@
 
 <!-- jQuery 2.2.3 -->
 <script src="{% static 'comum/js/jquery-2.2.3.min.js' %}"></script>
+<script>
+  $( "#id_tipo_1" ).change(function() {
+    if($(this).is(":checked")){
+      $( ".veiculo" ).removeClass('hide');
+    }else{
+      $( ".veiculo" ).addClass('hide');
+    }
+  });
+  $(document).ready(function(){
+    if($("#id_tipo_1").is(":checked")){
+      $( ".veiculo" ).removeClass('hide');
+    }else{
+      $( ".veiculo" ).addClass('hide');
+    }
+  });
+</script>
 <!-- Bootstrap 3.3.6 -->
 <script src="{% static 'comum/js/bootstrap.min.js' %}"></script>
 </body>
