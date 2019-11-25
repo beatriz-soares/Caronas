@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load bootstrap_pagination %}
+{% load comum_extras %}
+{% block extra_css %}
+<!-- Coloque aqui seus arquivos de estilo -->
+{% endblock %}
+
+{% block tipos_depoimento %} active {% endblock %}
+
+{% block breadcrumb %}
+<section class="content-header">
+    <h1>
+        Tipos de Depoimentos
+    </h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i> Tipos de Depoimentos</li>
+    </ol>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+  <div class="col-xs-12">
+          <div class="box">
+              <div class="box-header">
+                  <h3 class="box-title">Listagem de Tipos de Depoimentos</h3>
+                  <a href="{%url 'comum:novo_tipo_depoimento'%}" class="btn btn-small btn-info pull-right">Criar Tipo de Depoimento</a>
+                  <div class="box-tools">
+                  </div>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body table-responsive no-padding">
+                  <table class="table table-hover">
+                      <tr>
+                          <th>Tipos</th>
+                      </tr>
+                      {% for depoimento in depoimentos %}
+                      <tr>
+                          <td>{{ depoimento.nome }}</td>
+                      </tr>
+
+                      {% endfor %}
+                  </table>
+              </div>
+          </div>
+      </div>
+    <nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% bootstrap_paginate depoimentos range=5 show_prev_next="true" show_first_last="true" %}
+    </ul>
+  </nav>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
