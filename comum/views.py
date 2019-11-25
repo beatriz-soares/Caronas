@@ -142,14 +142,14 @@ def novo_oferecer_carona(request):
         if form.is_valid():
             # Fazer alguma coisa
             carona = form.save()
-            passageiro = Passageiro.objects.get(usuario=Usuario.objects.get(pk=request.user.id))
-            passageiro.carona.add(carona)
+            carona.motorista = Motorista.objects.get(usuario=Usuario.objects.get(pk=request.user.id))
+            carona.save()
             return HttpResponseRedirect(reverse('comum:index'))
         else:
             print form.errors
             messages.warning(request, "Veja os erros")
 
-    return render(request, 'novo_pedido_carona.html', {"form":form})
+    return render(request, 'novo_oferecer_carona.html', {"form":form})
 
 
 def tipos_depoimento(request):
@@ -159,6 +159,7 @@ def tipos_depoimento(request):
         return render(request, "tipos_depoimento.html", {"depoimentos":depoimentos})
     else:
         return HttpResponseRedirect(reverse('comum:index'))
+
 
 def novo_tipo_depoimento(request):
     if request.user.is_superuser:
