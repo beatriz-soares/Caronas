@@ -16,8 +16,63 @@ class NovoDepoimentoForm(forms.ModelForm):
             'document':"Anexe uma imagem",
         }
 
+class NovaRotaForm(forms.ModelForm):
+    horario = forms.TimeField(widget=forms.TimeInput(format='%H:%M',
+                                                           attrs={'class': 'form-control'}),
+                                    input_formats=('%H:%M',), label="Dia/Hora", required=True)
+    class Meta:
+        model = RotasDeInteresse
+        fields = ('localizacao_atual', 'localizacao_final', 'horario')
+        labels = {
+            'localizacao_atual': u"De",
+            'localizacao_final': u"Até",
+            'horario': u"Horário",
+        }
+
+
+class NovoPontoForm(forms.ModelForm):
+    horario = forms.TimeField(widget=forms.TimeInput(format='%H:%M',
+                                                           attrs={'class': 'form-control'}),
+                                    input_formats=('%H:%M',), label="Dia/Hora", required=True)
+    class Meta:
+        model = PontosDeInteresse
+        fields = ('localizacao', 'horario')
+        labels = {
+            'localizacao': u"Local",
+            'horario': u"Horário",
+        }
+
+
+class CaronaForm(forms.ModelForm):
+    data = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y',
+                                                           attrs={'class': 'form-control'}),
+                                    input_formats=('%d/%m/%Y',), label="Data", required=True)
+    ponto_embarque = forms.ChoiceField(choices=[(None, "------")], label="Ponto de Embarque",
+                                              widget=forms.Select(attrs={"class": "form-control"}))
+    class Meta:
+        model = Carona
+        fields = ('data', 'destino', 'ponto_embarque')
+        labels = {
+            'destino': u"Destino",
+            "data": "Data"
+        }
+
+    def __init__(self, usuario, *args, **kwargs):
+        super(CaronaForm, self).__init__(*args, **kwargs)
+        rotas_qs = RotasDeInteresse.objects.filter(usuario=usuario)
+        pontos_qs = PontosDeInteresse.objects.filter(usuario=usuario)
+        rotas = [u"Às %s em %s até %s"
+            %(str(r.horario), r.localizacao_atual.split(',')[0], r.localizacao_final.split(',')[0]) for r in rotas_qs]
+        pontos = [u"Às %s em %s"%(str(p.horario), p.localizacao.split(',')[0]) for p in pontos_qs]
+        dictionary = dict(zip(pontos + rotas, pontos + rotas))
+        lista = [(k, v) for k, v in dictionary.items()] 
+
+        self.fields['ponto_embarque'].choices = lista
+
+
 class FiltroDepoimentoForm(forms.Form):
     tipo = forms.ModelChoiceField(TipoDepoimentos.objects.all(), required=False)
+
 
 class NovoTipoDepoimentoForm(forms.ModelForm):
     class Meta:

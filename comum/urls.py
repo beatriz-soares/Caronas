@@ -15,5 +15,9 @@ urlpatterns = [
     url(r'^mensagens/(?P<id>\d+)/$', views.mensagens, name='mensagens'),
     url(r'^tipos_depoimento/$', views.tipos_depoimento, name='tipos_depoimento'),
     url(r'^tipos_depoimento/novo/$', views.novo_tipo_depoimento, name='novo_tipo_depoimento'),
-    url(r'^novo_usuario/$', views.novo_usuario, name='novo_usuario')
+    url(r'^novo_usuario/$', views.novo_usuario, name='novo_usuario'),
+    url(r'^nova_rota/$', views.nova_rota, name='nova_rota'),
+    url(r'^novo_ponto/$', views.novo_ponto, name='novo_ponto'),
+    url(r'^novo_pedido_carona/$', views.novo_pedido_carona, name='novo_pedido_carona'),
+    url(r'^novo_oferecer_carona/$', views.novo_oferecer_carona, name='novo_oferecer_carona'),
 ]
