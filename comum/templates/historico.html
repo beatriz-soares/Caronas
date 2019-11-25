@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load bootstrap_pagination %}
+{% load comum_extras %}
+{% block extra_css %}
+<!-- Coloque aqui seus arquivos de estilo -->
+{% endblock %}
+
+{% block historico %} active {% endblock %}
+
+{% block breadcrumb %}
+<section class="content-header">
+    <h1>
+        Histórico
+        <small>Todas as caronas já pedidas/oferecidas por você</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i> Index</li>
+        <li><i class="active"></i> Histórico</li>
+    </ol>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+        <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Caronas Oferecidas</h3>
+    
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <div class="table-responsive">
+                    <table class="table no-margin">
+                      <thead>
+                      <tr>
+                        <th>Partida</th>
+                        <th>Destino</th>
+                        <th>Data</th>
+                        <th>Avaliação</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                          {% for oferta in caronas_dadas %}
+                      <tr>
+                        <td>{{oferta.ponto_embarque}}</td>
+                        <td>{{oferta.destino}}</td>
+                        <td>{{oferta.data}}</td>
+                        <td> 10
+                        </td>
+                      </tr>
+                            
+                            {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                </div>
+                <!-- /.box-footer -->
+              </div>
+
+              <div class="box box-info">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Caronas Pedidas</h3>
+        
+                      <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                      <div class="table-responsive">
+                        <table class="table no-margin">
+                          <thead>
+                          <tr>
+                            <th>Partida</th>
+                            <th>Destino</th>
+                            <th>Data</th>
+                            <th>Avaliação</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                              {% for oferta in caronas_pedidas %}
+                          <tr>
+                            <td>{{oferta.ponto_embarque}}</td>
+                            <td>{{oferta.destino}}</td>
+                            <td>{{oferta.data}}</td>
+                            <td> 10
+                            </td>
+                          </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer clearfix">
+                    </div>
+                    <!-- /.box-footer -->
+                  </div>
+</section>
+
+
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}

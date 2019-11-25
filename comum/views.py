@@ -13,6 +13,7 @@ from django.urls import reverse
 from comum.forms import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
+import datetime
 
 # Create your views here.
 def paginar_registros(request, registros, qtd_por_pagina):
@@ -28,15 +29,22 @@ def paginar_registros(request, registros, qtd_por_pagina):
 
 def index(request):
     if request.user.is_authenticated():
-        registros = Depoimentos.objects.all().order_by("-id")
-        form = FiltroDepoimentoForm(request.GET or None)
-        if request.GET and form.is_valid():
-            tipo = form.cleaned_data.get('tipo')
-            if tipo:
-                registros = registros.filter(tipo=tipo)
-        depoimentos = paginar_registros(request, registros, 15)
+        passageiro = Passageiro.objects.filter(usuario=Usuario.objects.get(pk=request.user.id))
+        motorista = Motorista.objects.filter(usuario=Usuario.objects.get(pk=request.user.id))
+        caronas_pedidas = None
+        caronas_dadas = None
+        if len(passageiro)>0:
+            caronas_pedidas = passageiro.first().carona.all().filter(data__gte=datetime.datetime.today())
+        if len(motorista)>0:
+            caronas_dadas = Carona.objects.filter(motorista=motorista.first(), data__gte=datetime.datetime.today())
+        if caronas_pedidas:
+            ofertas = Carona.objects.filter(data__in=caronas_pedidas.values_list("data"), motorista__isnull=False).exclude(pk__in=caronas_pedidas.values("id")).exclude(pk__in=caronas_dadas.values("id"))
+        if caronas_dadas:
+            passageiros = []
+            for carona in caronas_dadas:
+                passageiros.append({"carona": carona, "passageiros": Passageiro.objects.filter(carona=carona)})
         # return render(request, 'comum/listagem_telediagnosticos.html', {'telediagnosticos': telediagnosticos, 'form': form})
-        return render(request, "inicio.html", {"depoimentos":depoimentos, "form":form})
+        return render(request, "inicio.html", locals())
     else:
         return HttpResponseRedirect(reverse('comum:login'))
 
@@ -150,6 +158,16 @@ def novo_oferecer_carona(request):
             messages.warning(request, "Veja os erros")
 
     return render(request, 'novo_oferecer_carona.html', {"form":form})
+
+
+def historico(request):
+    passageiro = Passageiro.objects.filter(usuario=Usuario.objects.get(pk=request.user.id))
+    motorista = Motorista.objects.filter(usuario=Usuario.objects.get(pk=request.user.id))
+    if len(passageiro)>0:
+        caronas_pedidas = passageiro.first().carona.all()
+    if len(motorista)>0:
+        caronas_dadas = Carona.objects.filter(motorista=motorista.first())
+    return render(request, 'historico.html', locals())
 
 
 def tipos_depoimento(request):

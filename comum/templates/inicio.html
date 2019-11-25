@@ -11,8 +11,8 @@
 {% block breadcrumb %}
 <section class="content-header">
     <h1>
-        Início
-        <small>Dados Gerais da Aplicação</small>
+        Index
+        <small>Página Inicial</small>
     </h1>
     <ol class="breadcrumb">
         <li><i class="fa fa-dashboard"></i> Index</li>
@@ -22,181 +22,87 @@
 
 {% block content %}
 <section class="content">
-  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-      <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
-              <h4 class="panel-title">
-                  <a class="a-span" role="button" data-toggle="collapse" data-parent="#accordion"
-                     href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Busca
-                  </a>
-              </h4>
-          </div>
-
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-              <div class="panel-body">
-                  {{ form.errors }}
-
-                  <form action="" method="get">
-                      <div class="row">
-                          {% for field in form %}
-                          <div class="{% if forloop.counter > 1 %} col-md-6 {% else %} col-md-12 {% endif %}">
-                              <div class="form-group">
-                                  {{ field.label_tag }}
-                                  {{ field|add_css_class:"form-control" }}
-                              </div>
-                          </div>
-                          {% endfor %}
-                      </div>
-
-                      <div class="underline"></div>
-
-                      <button class="btn btn-success pull-right" type="submit">Buscar</button>
-                  </form>
-              </div>
-          </div>
-      </div>
-  </div>
-  {% for depoimento in depoimentos %}
-    <div class="box box-info">
-        <div class="box-header with-border">
-          {% if request.user.is_superuser %}
-          <a href="{% url 'comum:apagar_depoimento' depoimento.id %}" class="btn btn-small btn-danger pull-right">Apagar</a>
-          {% endif %}
-          <span class="label label-default">{{depoimento.tipo.nome}}</span>
-            <h3 class="box-title">{{depoimento.titulo}}</h3>
-                {% if depoimento.autor != request.user%}
-               <button type="button" name="button" class="btn btn-small btn-info pull-right recado" data-id="{{depoimento.id}}" data-toggle="modal" data-target="#exampleModal">Deixe um recado motivador</button>
-               {% endif %}
-        </div>
-        <div class="box-body">
-            <div class="row">
-              {% if depoimento.document %}
-                <div class="col-md-12" style="text-align:center;">
-                  <img src="{{depoimento.document.url}}" class="img-fluid rounded mx-auto d-block" style="max-width:100%; max-height:100%;" alt="">
-                </div>
-              {% endif %}
-                <div class="col-md-12">
-                    <div id="container">{{depoimento.conteudo}}</div>
-                </div>
-                <div class="col-md-12">
-                  <small class="pull-right">Publicado por: {{depoimento.autor}}
-                  </small>
-
-                </div>
-            </div>
-        </div>
-        <div class="box-footer">
-          <div class="panel-group" id="accordion-{{depoimento.id}}" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
-                  <div class="panel-heading" role="tab" id="headingOne-{{depoimento.id}}">
-                      <h4 class="panel-title">
-                          <a class="a-span" role="button" data-toggle="collapse" data-parent="#accordion-{{depoimento.id}}"
-                             href="#collapseOne-{{depoimento.id}}" aria-expanded="true" aria-controls="collapseOne-{{depoimento.id}}">
-                              <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Comentários
-                          </a>
-                      </h4>
-                  </div>
-
-                  <div id="collapseOne-{{depoimento.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne-{{depoimento.id}}">
-                      <div class="panel-body">
-                          {% for comentario in depoimento.comentarios.all %}
-
-                            <div class="direct-chat-msg">
-                          <div class="direct-chat-info clearfix">
-                            <span class="direct-chat-name pull-left">{{comentario.autor}}</span>
-                          </div>
-                          <!-- /.direct-chat-img -->
-                          <div class="direct-chat-text">
-                            {{comentario.conteudo}}
-                          </div>
-                          <!-- /.direct-chat-text -->
-                        </div>
-                        {% empty %}
-                        <p>Seja o(a) primeiro(a) a comentar!</p>
-                        {%endfor%}
-                          <form action="{% url 'comum:novo_comentario' depoimento.id %}" method="get" id="comente">
-                              <div class="row">
-                                  <div class="col-md-12">
-                                      <div class="form-group">
-                                          <label for="{{depoimento.id}}"></label>
-                                          <input type="text" name="comentario" value="" id="{{depoimento.id}}" class="form-control">
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div class="underline"></div>
-
-                              <button for="#comente"class="btn btn-success pull-right" type="submit">Comentar</button>
-                          </form>
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
-    </div>
-    {%empty%}
-    <div class="box box-default">
-        <div class="box-header with-border">
-            <h3 class="box-title">Sem depoimentos</h3>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="container">Não há depoimentos para exibir</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {%endfor%}
-    <nav aria-label="Page navigation">
-    <ul class="pagination">
-        {% bootstrap_paginate depoimentos range=5 show_prev_next="true" show_first_last="true" %}
-    </ul>
-  </nav>
-</section>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="exampleModalLabel">Deixe uma mensagem motivadora para esse depoimento!</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="post" id="msg-motivadora">
-          {% csrf_token %}
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label >Mensagem</label>
-                        <textarea rows=5 name="msgm" value="" id="msgm" class="form-control">
-                      </textarea>
+        <div class="row">
+          <div class="col-md-6">
+              <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Ofertas de Carona Para Você</h3>
+      
+                    <div class="box-tools pull-right">
+                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                      </button>
                     </div>
+                  </div>
+                  <!-- /.box-header -->
+                  <div class="box-body">
+                    <ul class="products-list product-list-in-box">
+                      {% for oferta in ofertas %}
+                      <li class="item">
+                        <div class="product-img">
+                        </div>
+                        <div class="product-info">
+                          <a href="javascript:void(0)" class="product-title">Indo {{oferta.ponto_embarque}} para {{oferta.destino}}
+                            <span class="label label-warning pull-right">Dia {{oferta.data}}</span></a>
+                            <p>Pegue carona com {{oferta.motorista.usuario.name}}, no veículo {{oferta.motorista.veiculo.modelo}} na cor {{oferta.motorista.veiculo.cor}}, com a placa {{oferta.motorista.veiculo.placa}}.
+                              </p>
+                            </div>
+                      </li>
+                      {% endfor %}
+                      <!-- /.item -->
+                      <!-- /.item -->
+                    </ul>
+                  </div>
+                  <!-- /.box-body -->
+                  <div class="box-footer text-center">
+                  </div>
+                  <!-- /.box-footer -->
                 </div>
-            </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="submit" for="#msg-motivadora" id="enviarmsg" class="btn btn-primary">Enviar</button>
-      </div>
-    </div>
-  </div>
-</div>
+          </div>
+          <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Passageiros para suas caronas</h3>
+    
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <ul class="products-list product-list-in-box">
+                    {% for item in passageiros %}
+                    <li class="item">
+                      <div class="product-img">
+                      </div>
+                      <div class="product-info">
+                        <a href="javascript:void(0)" class="product-title">Indo {{item.carona.ponto_embarque}} para {{item.carona.destino}}
+                          <span class="label label-warning pull-right">Dia {{item.carona.data}}</span></a>
+                          {% for p in item.passageiros %}
+                          <p>Dê carona para {{p.usuario.username}}.
+                            </p>
+                            {%empty%}
+                            <p>Ainda não há nenhum passageiro</p>
+                            {%endfor %}
+                          </div>
+                    </li>
+                    {% endfor %}
+                    <!-- /.item -->
+                    <!-- /.item -->
+                  </ul>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer text-center">
+                </div>
+                <!-- /.box-footer -->
+              </div>
+        </div>
+        </div>
+</section>
 
 
 {% endblock %}
 
 {% block extra_js %}
-<script type="text/javascript">
-  $(".recado").on("click", function(){
-    var depoimento = $(this).attr("data-id");
-    $('#msg-motivadora').attr('action', "/nova_mensagem/"+depoimento+"/");
 
-  });
-  $("#enviarmsg").on("click", function(){
-    $('#msg-motivadora').submit();
-  });
-</script>
 {% endblock %}

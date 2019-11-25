@@ -20,4 +20,6 @@ urlpatterns = [
     url(r'^novo_ponto/$', views.novo_ponto, name='novo_ponto'),
     url(r'^novo_pedido_carona/$', views.novo_pedido_carona, name='novo_pedido_carona'),
     url(r'^novo_oferecer_carona/$', views.novo_oferecer_carona, name='novo_oferecer_carona'),
+    url(r'^historico/$', views.historico, name='historico'),
+
 ]

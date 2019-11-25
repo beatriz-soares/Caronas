@@ -136,7 +136,7 @@
             {% if request.user.is_superuser %}
             <li class="{% block tipos_depoimento %}{% endblock %}"><a href="{% url 'comum:tipos_depoimento' %}"><i class="fa fa-link"></i> <span>Tipos de depoimento</span></a></li>
             {% endif %}
-            <li class="{% block estatistica %}{% endblock %}"><a href="{% url 'comum:estatistica' %}"><i class="fa fa-link"></i> <span>Meu Histórico</span></a></li>
+            <li class="{% block historico %}{% endblock %}"><a href="{% url 'comum:historico' %}"><i class="fa fa-link"></i> <span>Meu Histórico</span></a></li>
             <li class="{% block veiculo %}{% endblock %}"><a href="{% url 'comum:estatistica' %}"><i class="fa fa-link"></i> <span>Meu Veículo</span></a></li>
           </ul>
           <!-- /.sidebar-menu -->
