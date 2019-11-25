@@ -5,32 +5,38 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
 class Usuario(User):
     telefone = models.CharField(max_length=11)
     nome = models.CharField(max_length=100)
     cidade = models.CharField(max_length=35)
 
+
 class PontosDeInteresse(models.Model):
-    localizacao = models.CharField(max_length=50)
+    localizacao = models.CharField(max_length=250)
     horario = models.DateTimeField(auto_now=True, auto_now_add=False)
     usuario = models.ManyToManyField(Usuario)
 
+
 class RotasDeInteresse(models.Model):
-    localizacao_atual = models.CharField(max_length=50)
-    localizacao_final = models.CharField(max_length=50)
-    horario = models.DateTimeField(auto_now=True, auto_now_add=False)
+    localizacao_atual = models.CharField(max_length=250)
+    localizacao_final = models.CharField(max_length=250)
+    horario = models.DateTimeField()
     usuario = models.ManyToManyField(Usuario)
     
+
 class Veiculo(models.Model):
     placa = models.CharField(max_length=7)
     cor = models.CharField(max_length=20)
     modelo = models.CharField(max_length=20)
     ano = models.IntegerField(validators=[MinValueValidator(2008), MaxValueValidator(2020)])
     
+
 class Motorista(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     cnh = models.CharField(max_length=11)
     veiculo = models.OneToOneField(Veiculo, on_delete=models.CASCADE)
+
 
 class Carona(models.Model):
     ponto_embarque = models.CharField(max_length=30)
@@ -38,19 +44,23 @@ class Carona(models.Model):
     destino = models.TextField()
     preco = models.FloatField()
 
+
 class Passageiro(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     carona = models.ManyToManyField(Carona)
+
 
 class Avaliacao(models.Model):
     nota = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     motorista = models.ManyToManyField(Motorista)
     passageiro = models.ManyToManyField(Passageiro)
     
+
 class Comentario(models.Model):
     titulo = models.CharField(max_length=15)
     texto = models.TextField()
     avaliacao = models.ForeignKey(Avaliacao, on_delete=models.CASCADE)
+
 
 # Create your models here.
 class TipoDepoimentos(models.Model):

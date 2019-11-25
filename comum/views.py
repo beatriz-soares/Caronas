@@ -85,6 +85,21 @@ def novo_depoimento(request):
 
     return render(request, 'novo_depoimento.html', {"form":form})
 
+def nova_rota(request):
+    form = NovaRotaForm(request.POST or None)
+    if request.POST:
+        if form.is_valid():
+            # Fazer alguma coisa
+            rota = form.save()
+            rota.usuario.add(Usuario.objects.get(pk=request.user.id))
+            rota.save()
+            return HttpResponseRedirect(reverse('comum:index'))
+        else:
+            print form.errors
+            messages.warning(request, "Veja os erros")
+
+    return render(request, 'nova_rota.html', {"form":form})
+
 def tipos_depoimento(request):
     if request.user.is_superuser:
         registros = TipoDepoimentos.objects.all().order_by("-id")

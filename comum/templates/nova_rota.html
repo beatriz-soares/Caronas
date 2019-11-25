@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load comum_extras %}
+{% block extra_css %}
+  <!-- Coloque aqui seus arquivos de estilo -->
+  <link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+  crossorigin="anonymous">
+
+  <link
+  rel="stylesheet"
+  href="https://rawgit.com/bassjobsen/typeahead.js-bootstrap-css/master/typeaheadjs.css" />
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+
+{% endblock %}
+{% block novo_rota %}active{% endblock %}
+{% block breadcrumb %}
+  <section class="content-header">
+    <h1>
+      Cadastrar Rota
+      <small>Cadastre uma rota que você quer oferecer/pedir carona.</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> Início</a></li>
+        <li class="active">Nova Rota</li>
+    </ol>
+  </section>
+{% endblock %}
+
+{% block content %}
+  <section class="content">
+    <!-- Coloque aqui seus conteúdo -->
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Novo</h3>
+      </div>
+
+      {{ form.non_field_errors }}
+
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="box-body">
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {{ field.label_tag }}
+                    {{ field|add_css_class:'form-control' }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="box-footer">
+          <a href="{% url 'comum:index' %}" class="btn btn-default">Cancelar</a>
+          <button type="submit" class="btn btn-primary pull-right">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+  <!-- Coloque aqui seus arquivos de script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+  <script
+  src="https://rawgit.com/corejavascript/typeahead.js/master/dist/typeahead.bundle.js"></script>
+
+  <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+
+<!-- Developed script -->
+    <script src="https://rawgit.com/komoot/typeahead-address-photon/master/src/typeahead-address-photon.js"></script>
+    <!-- Coloque aqui seus arquivos de script -->
+    <script>
+        var engine = new PhotonAddressEngine({
+            url: 'https://photon.komoot.de',
+            lang: 'en',
+            lat:  -5.79448,
+            lon: -35.211
+                });
+
+        $('#id_localizacao_atual').typeahead(null, {
+            source: engine.ttAdapter(),
+            displayKey: 'description'
+        });
+        $('#id_localizacao_final').typeahead(null, {
+            source: engine.ttAdapter(),
+            displayKey: 'description'
+        });
+
+      $("#id_horario").mask("99/99/9999 99:99");
+</script>
+{% endblock %}

@@ -129,6 +129,8 @@
           <ul class="sidebar-menu live-search-list">
             <!-- Optionally, you can add icons to the links -->
             <li class="{% block index %}{% endblock %}"><a href="{% url 'comum:index' %}"><i class="fa fa-link"></i> <span>Início</span></a></li>
+            <li class="{% block novo_ponto %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Novo Ponto de Interesse</span></a></li>
+            <li class="{% block novo_rota %}{% endblock %}"><a href="{% url 'comum:nova_rota' %}"><i class="fa fa-link"></i> <span>Nova Rota de Interesse</span></a></li>
             <li class="{% block novo_depoimento %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Pedir Carona</span></a></li>
             <li class="{% block nova_carona %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Oferecer Carona</span></a></li>
             {% if request.user.is_superuser %}
@@ -183,6 +185,7 @@
     <script src="{% static 'comum/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'comum/js/app.min.js' %}"></script>
     <script src="{% static 'comum/js/live-search.js' %}"></script>
+    
 
     {% block extra_js %}{% endblock %}
   </body>

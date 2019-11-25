@@ -16,6 +16,19 @@ class NovoDepoimentoForm(forms.ModelForm):
             'document':"Anexe uma imagem",
         }
 
+class NovaRotaForm(forms.ModelForm):
+    horario = forms.DateTimeField(widget=forms.DateTimeInput(format='%d/%m/%Y %H:%M',
+                                                           attrs={'class': 'form-control'}),
+                                    input_formats=('%d/%m/%Y %H:%M',), label="Dia/Hora", required=True)
+    class Meta:
+        model = RotasDeInteresse
+        fields = ('localizacao_atual', 'localizacao_final', 'horario')
+        labels = {
+            'localizacao_atual': u"De",
+            'localizacao_final': u"Até",
+            'horario': u"Dia/Hora",
+        }
+
 class FiltroDepoimentoForm(forms.Form):
     tipo = forms.ModelChoiceField(TipoDepoimentos.objects.all(), required=False)
 
