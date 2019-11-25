@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 class NovoDepoimentoForm(forms.ModelForm):
-    # document = forms.FileField(required=False)
+    endereco = forms.CharField(label=_("Endereco"))
     class Meta:
         model = Depoimentos
         fields = ('titulo', 'conteudo', 'tipo', 'document')

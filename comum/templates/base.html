@@ -27,9 +27,9 @@
         <!-- Logo -->
         <a href="/" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>SOS</b></span>
+          <span class="logo-mini"><b>MC</b></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>SOS</b>Girls</span>
+          <span class="logo-lg"><b>Minha</b>Carona</span>
         </a>
 
         <!-- Header Navbar -->
@@ -129,11 +129,13 @@
           <ul class="sidebar-menu live-search-list">
             <!-- Optionally, you can add icons to the links -->
             <li class="{% block index %}{% endblock %}"><a href="{% url 'comum:index' %}"><i class="fa fa-link"></i> <span>Início</span></a></li>
-            <li class="{% block novo_depoimento %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Dar depoimento</span></a></li>
+            <li class="{% block novo_depoimento %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Pedir Carona</span></a></li>
+            <li class="{% block nova_carona %}{% endblock %}"><a href="{% url 'comum:novo_depoimento' %}"><i class="fa fa-link"></i> <span>Oferecer Carona</span></a></li>
             {% if request.user.is_superuser %}
             <li class="{% block tipos_depoimento %}{% endblock %}"><a href="{% url 'comum:tipos_depoimento' %}"><i class="fa fa-link"></i> <span>Tipos de depoimento</span></a></li>
             {% endif %}
-            <li class="{% block estatistica %}{% endblock %}"><a href="{% url 'comum:estatistica' %}"><i class="fa fa-link"></i> <span>Estatística</span></a></li>
+            <li class="{% block estatistica %}{% endblock %}"><a href="{% url 'comum:estatistica' %}"><i class="fa fa-link"></i> <span>Meu Histórico</span></a></li>
+            <li class="{% block veiculo %}{% endblock %}"><a href="{% url 'comum:estatistica' %}"><i class="fa fa-link"></i> <span>Meu Veículo</span></a></li>
           </ul>
           <!-- /.sidebar-menu -->
         </section>
@@ -167,7 +169,7 @@
         <!-- To the right -->
         <!-- Default to the left -->
         <strong>
-          <a href="#">Escola Municipal Rotary</a>
+          <a href="#">Sistema Minha Carona</a>
         </strong>
       </footer>
       <!-- /.control-sidebar -->

@@ -124,3 +124,5 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+GOOGLE_API_KEY = 'AIzaSyBGzILASrqT9wkw9YuQz7Aam1BiTjtkdfg'
