@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for caronas project.
 
@@ -26,7 +28,7 @@ SECRET_KEY = '6*$7bv92^528uyzl48$++z4x!ipwxssm0oq*5jngn48umyqo67'
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-STATIC_ROOT = "/home/beatrizsoares/caronas/comum/static"
+STATIC_ROOT = "/home/diego/Projetos/UFRN/Engenharia de Computação/8º período/Caronas/caronas/comum/static"
 
 # Application definition
 
