@@ -14,7 +14,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="{% static 'comum/css/AdminLTE.min.css' %}">
     <link rel="stylesheet" href="{% static 'comum/css/skin-blue.min.css' %}">
+    <style type='text/css'>
+    ul{
+    list-style-type: none;
+    padding: 0;
+  }
 
+  </style>
     {% block extra_css %}{% endblock %}
   </head>
 
@@ -131,13 +137,13 @@
             <li class="{% block index %}{% endblock %}"><a href="{% url 'comum:index' %}"><i class="fa fa-link"></i> <span>Início</span></a></li>
             <li class="{% block novo_ponto %}{% endblock %}"><a href="{% url 'comum:novo_ponto' %}"><i class="fa fa-link"></i> <span>Novo Ponto de Interesse</span></a></li>
             <li class="{% block novo_rota %}{% endblock %}"><a href="{% url 'comum:nova_rota' %}"><i class="fa fa-link"></i> <span>Nova Rota de Interesse</span></a></li>
+            {% if request.session.tipo == '1' %}
             <li class="{% block novo_pedido_carona %}{% endblock %}"><a href="{% url 'comum:novo_pedido_carona' %}"><i class="fa fa-link"></i> <span>Pedir Carona</span></a></li>
+            {% endif %}
+            {% if request.session.tipo == '2' %}
             <li class="{% block novo_oferecer_carona %}{% endblock %}"><a href="{% url 'comum:novo_oferecer_carona' %}"><i class="fa fa-link"></i> <span>Oferecer Carona</span></a></li>
-            {% if request.user.is_superuser %}
-            <li class="{% block tipos_depoimento %}{% endblock %}"><a href="{% url 'comum:tipos_depoimento' %}"><i class="fa fa-link"></i> <span>Tipos de depoimento</span></a></li>
             {% endif %}
             <li class="{% block historico %}{% endblock %}"><a href="{% url 'comum:historico' %}"><i class="fa fa-link"></i> <span>Meu Histórico</span></a></li>
-            <li class="{% block veiculo %}{% endblock %}"><a href="{% url 'comum:estatistica' %}"><i class="fa fa-link"></i> <span>Meu Veículo</span></a></li>
           </ul>
           <!-- /.sidebar-menu -->
         </section>

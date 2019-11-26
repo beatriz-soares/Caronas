@@ -23,7 +23,8 @@
 {% block content %}
 <section class="content">
         <div class="row">
-          <div class="col-md-6">
+          {% if request.session.tipo == '1' %}
+          <div class="col-md-12">
               <div class="box box-primary">
                   <div class="box-header with-border">
                     <h3 class="box-title">Ofertas de Carona Para Você</h3>
@@ -43,7 +44,7 @@
                         <div class="product-info">
                           <a href="javascript:void(0)" class="product-title">Indo {{oferta.ponto_embarque}} para {{oferta.destino}}
                             <span class="label label-warning pull-right">Dia {{oferta.data}}</span></a>
-                            <p>Pegue carona com {{oferta.motorista.usuario.name}}, no veículo {{oferta.motorista.veiculo.modelo}} na cor {{oferta.motorista.veiculo.cor}}, com a placa {{oferta.motorista.veiculo.placa}}.
+                            <p>Pegue carona com {{oferta.motorista.usuario.username}}, no veículo {{oferta.motorista.veiculo.modelo}} na cor {{oferta.motorista.veiculo.cor}}, com a placa {{oferta.motorista.veiculo.placa}}.
                               </p>
                             </div>
                       </li>
@@ -58,7 +59,9 @@
                   <!-- /.box-footer -->
                 </div>
           </div>
-          <div class="col-md-6">
+          {% endif %}
+          {% if request.session.tipo == '2' %}
+          <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title">Passageiros para suas caronas</h3>
@@ -97,12 +100,70 @@
                 <!-- /.box-footer -->
               </div>
         </div>
+        {% endif %}
         </div>
 </section>
 
+          {% comment %} <button type="button" name="button" class="btn btn-small btn-info pull-right recado" data-id="{{depoimento.id}}" data-toggle="modal" data-target="#exampleModal">Deixe um recado motivador</button> {% endcomment %}
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                  {{ form.errors }}
+
+                  <form action="" method="get">
+                      <div class="row">
+                          {% for field in form %}
+                          <div class="{% if forloop.counter > 1 %} col-md-6 {% else %} col-md-12 {% endif %}">
+                              <div class="form-group">
+                                  {{ field.label_tag }}
+                                  {{ field|add_css_class:"form-control" }}
+                              </div>
+                          </div>
+                          {% endfor %}
+                      </div>
+
+                      <div class="underline"></div>
+
+                      <button class="btn btn-success pull-right" type="submit">Buscar</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</section>
+{% if duo and not request.session.tipo %}
+  <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Detectamos que você possui dois tipos de perfil, por favor, escolha um!</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="" method="post" id="selecionou">
+      <div class="modal-body">
+        <div class="form-group">          
+        {% csrf_token %}            
+          {{ form.tipo.label_tag }}
+          {{ form.tipo }}          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="submit" id="vai" class="btn btn-primary" data-dismiss="modal">Selectionar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+{% endif %}
 
 {% endblock %}
 
 {% block extra_js %}
-
+<script>$("#exampleModal").modal('show');
+$("#vai").on("click", function(){
+  $("#selecionou").submit();
+})
+</script>
 {% endblock %}

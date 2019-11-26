@@ -14,6 +14,7 @@ from comum.forms import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
 import datetime
+from comum.models import *
 
 # Create your views here.
 def paginar_registros(request, registros, qtd_por_pagina):
@@ -28,6 +29,25 @@ def paginar_registros(request, registros, qtd_por_pagina):
         return paginator.page(paginator.num_pages)
 
 def index(request):
+    registros = Depoimentos.objects.all().order_by("-id")
+    duo = False
+    passageiro = Passageiro.objects.filter(usuario=request.user.id).exists()
+    motorista = Motorista.objects.filter(usuario=request.user.id).exists()
+    if passageiro and motorista:
+        duo = True
+    elif passageiro:
+        request.session["tipo"] = '1'
+    elif motorista:
+        request.session["tipo"] = '2'
+    form = TipoUsuarioForm(request.POST or None)
+    if request.POST:
+        print "DEU POST"
+        if form.is_valid():
+            tipo = form.cleaned_data.get('tipo')
+            request.session["tipo"] = tipo
+            print request.session["tipo"]
+        else:
+            print form.errors
     if request.user.is_authenticated():
         passageiro = Passageiro.objects.filter(usuario=Usuario.objects.get(pk=request.user.id))
         motorista = Motorista.objects.filter(usuario=Usuario.objects.get(pk=request.user.id))
@@ -38,13 +58,15 @@ def index(request):
         if len(motorista)>0:
             caronas_dadas = Carona.objects.filter(motorista=motorista.first(), data__gte=datetime.datetime.today())
         if caronas_pedidas:
-            ofertas = Carona.objects.filter(data__in=caronas_pedidas.values_list("data"), motorista__isnull=False).exclude(pk__in=caronas_pedidas.values("id")).exclude(pk__in=caronas_dadas.values("id"))
+            ofertas = Carona.objects.filter(data__in=caronas_pedidas.values_list("data"), motorista__isnull=False).exclude(pk__in=caronas_pedidas.values("id"))
         if caronas_dadas:
+            ofertas = ofertas.exclude(pk__in=caronas_dadas.values("id"))
             passageiros = []
             for carona in caronas_dadas:
                 passageiros.append({"carona": carona, "passageiros": Passageiro.objects.filter(carona=carona)})
         # return render(request, 'comum/listagem_telediagnosticos.html', {'telediagnosticos': telediagnosticos, 'form': form})
         return render(request, "inicio.html", locals())
+        
     else:
         return HttpResponseRedirect(reverse('comum:login'))
 
