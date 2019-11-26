@@ -10,7 +10,7 @@ O usuário pode realizar cadastro tanto como passageiro (desejando solicitar car
 ## Implementação e Ferramenta
 
 O Sistema foi desenvolvido utilizando o framework Django feito em Python, voltado para aplicaçoes Web. 
-Utiliza como SGBD o SQLite3 e o Mapeamento objeto-relacional do Django. Além de utilizar sessões, forms e outros utilitários do framework.
+Utiliza como SGBD o SQLite3 e o Mapeamento Objeto-Relacional (ORM) do Django. Além de utilizar sessões, forms e outros utilitários do framework.
 
 ## Funcionamento e Fluxo
 
