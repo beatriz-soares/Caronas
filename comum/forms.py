@@ -176,7 +176,14 @@ class NovoUserForm(forms.ModelForm):
             motorista.usuario = usuario
             motorista.veiculo = veiculo
             motorista.save()
+        elif '1' in tipo:
+            passageiro.usuario = usuario
+            passageiro.save()
         else:
+            veiculo = Veiculo.objects.create(placa=placa_veiculo, cor=cor_veiculo, modelo=modelo_veiculo, ano=ano_veiculo)
+            motorista.usuario = usuario
+            motorista.veiculo = veiculo
+            motorista.save()
             passageiro.usuario = usuario
             passageiro.save()
 

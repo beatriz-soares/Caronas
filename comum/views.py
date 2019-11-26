@@ -13,6 +13,7 @@ from django.urls import reverse
 from comum.forms import *
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
+from comum.models import *
 
 # Create your views here.
 def paginar_registros(request, registros, qtd_por_pagina):
@@ -29,6 +30,7 @@ def paginar_registros(request, registros, qtd_por_pagina):
 def index(request):
     if request.user.is_authenticated():
         registros = Depoimentos.objects.all().order_by("-id")
+        print(Usuario.objects.get(id=request.user.id))
         form = FiltroDepoimentoForm(request.GET or None)
         if request.GET and form.is_valid():
             tipo = form.cleaned_data.get('tipo')
