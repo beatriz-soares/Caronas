@@ -98,11 +98,6 @@ class NovoUserForm(forms.ModelForm):
             )
 
         if '2' in tipo:
-            print(tipo)
-            print(placa_veiculo)
-            print(cor_veiculo)
-            print(ano_veiculo)
-            print(modelo_veiculo)
             if not (cnh and placa_veiculo and cor_veiculo and ano_veiculo and modelo_veiculo):
                 raise forms.ValidationError(
                     u"Preencha todas as informações sobre o Motorista"
@@ -141,5 +136,8 @@ class NovoUserForm(forms.ModelForm):
             motorista.usuario = usuario
             motorista.veiculo = veiculo
             motorista.save()
+        else:
+            passageiro.usuario = usuario
+            passageiro.save()
 
         return usuario
