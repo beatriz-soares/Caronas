@@ -32,7 +32,7 @@
                   </a>
               </h4>
           </div>
-          <button type="button" name="button" class="btn btn-small btn-info pull-right recado" data-id="{{depoimento.id}}" data-toggle="modal" data-target="#exampleModal">Deixe um recado motivador</button>
+          {% comment %} <button type="button" name="button" class="btn btn-small btn-info pull-right recado" data-id="{{depoimento.id}}" data-toggle="modal" data-target="#exampleModal">Deixe um recado motivador</button> {% endcomment %}
           <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
               <div class="panel-body">
                   {{ form.errors }}
@@ -57,134 +57,34 @@
           </div>
       </div>
   </div>
-  {% for depoimento in depoimentos %}
-    <div class="box box-info">
-        <div class="box-header with-border">
-          {% if request.user.is_superuser %}
-          <a href="{% url 'comum:apagar_depoimento' depoimento.id %}" class="btn btn-small btn-danger pull-right">Apagar</a>
-          {% endif %}
-          <span class="label label-default">{{depoimento.tipo.nome}}</span>
-            <h3 class="box-title">{{depoimento.titulo}}</h3>
-                {% if depoimento.autor != request.user%}
-               <button type="button" name="button" class="btn btn-small btn-info pull-right recado" data-id="{{depoimento.id}}" data-toggle="modal" data-target="#exampleModal">Deixe um recado motivador</button>
-               {% endif %}
-        </div>
-        <div class="box-body">
-            <div class="row">
-              {% if depoimento.document %}
-                <div class="col-md-12" style="text-align:center;">
-                  <img src="{{depoimento.document.url}}" class="img-fluid rounded mx-auto d-block" style="max-width:100%; max-height:100%;" alt="">
-                </div>
-              {% endif %}
-                <div class="col-md-12">
-                    <div id="container">{{depoimento.conteudo}}</div>
-                </div>
-                <div class="col-md-12">
-                  <small class="pull-right">Publicado por: {{depoimento.autor}}
-                  </small>
 
-                </div>
-            </div>
-        </div>
-        <div class="box-footer">
-          <div class="panel-group" id="accordion-{{depoimento.id}}" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
-                  <div class="panel-heading" role="tab" id="headingOne-{{depoimento.id}}">
-                      <h4 class="panel-title">
-                          <a class="a-span" role="button" data-toggle="collapse" data-parent="#accordion-{{depoimento.id}}"
-                             href="#collapseOne-{{depoimento.id}}" aria-expanded="true" aria-controls="collapseOne-{{depoimento.id}}">
-                              <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Comentários
-                          </a>
-                      </h4>
-                  </div>
-
-                  <div id="collapseOne-{{depoimento.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne-{{depoimento.id}}">
-                      <div class="panel-body">
-                          {% for comentario in depoimento.comentarios.all %}
-
-                            <div class="direct-chat-msg">
-                          <div class="direct-chat-info clearfix">
-                            <span class="direct-chat-name pull-left">{{comentario.autor}}</span>
-                          </div>
-                          <!-- /.direct-chat-img -->
-                          <div class="direct-chat-text">
-                            {{comentario.conteudo}}
-                          </div>
-                          <!-- /.direct-chat-text -->
-                        </div>
-                        {% empty %}
-                        <p>Seja o(a) primeiro(a) a comentar!</p>
-                        {%endfor%}
-                          <form action="{% url 'comum:novo_comentario' depoimento.id %}" method="get" id="comente">
-                              <div class="row">
-                                  <div class="col-md-12">
-                                      <div class="form-group">
-                                          <label for="{{depoimento.id}}"></label>
-                                          <input type="text" name="comentario" value="" id="{{depoimento.id}}" class="form-control">
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div class="underline"></div>
-
-                              <button for="#comente"class="btn btn-success pull-right" type="submit">Comentar</button>
-                          </form>
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
-    </div>
-    {%empty%}
-    <div class="box box-default">
-        <div class="box-header with-border">
-            <h3 class="box-title">Sem depoimentos</h3>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="container">Não há depoimentos para exibir</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {%endfor%}
-    <nav aria-label="Page navigation">
-    <ul class="pagination">
-        {% bootstrap_paginate depoimentos range=5 show_prev_next="true" show_first_last="true" %}
-    </ul>
-  </nav>
 </section>
-<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+{% if duo %}
+  <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="exampleModalLabel">Deixe uma mensagem motivadora para esse depoimento!</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h4 class="modal-title" id="exampleModalLabel">Detectamos que você possui dois tipos de perfil, por favor, escolha um!</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form action="" method="post">
       <div class="modal-body">
-        <form action="" method="post" id="msg-motivadora">
-          {% csrf_token %}
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label >Mensagem</label>
-                        <textarea rows=5 name="msgm" value="" id="msgm" class="form-control">
-                      </textarea>
-                    </div>
-                </div>
-            </div>
-        </form>
+        <div class="form-group">          
+        {% csrf_token %}            
+          {{ form.tipo.label_tag }}
+          {{ form.tipo }}          
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="submit" for="#msg-motivadora" id="enviarmsg" class="btn btn-primary">Enviar</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal">Selectionar</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
-
+{% endif %}
 
 {% endblock %}
 
@@ -195,6 +95,7 @@
     $('#msg-motivadora').attr('action', "/nova_mensagem/"+depoimento+"/");
 
   });
+  $("#exampleModal").modal('show');
   $("#enviarmsg").on("click", function(){
     $('#msg-motivadora').submit();
   });

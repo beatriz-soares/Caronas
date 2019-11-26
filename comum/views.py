@@ -30,15 +30,17 @@ def paginar_registros(request, registros, qtd_por_pagina):
 def index(request):
     if request.user.is_authenticated():
         registros = Depoimentos.objects.all().order_by("-id")
-        print(Usuario.objects.get(id=request.user.id))
-        form = FiltroDepoimentoForm(request.GET or None)
-        if request.GET and form.is_valid():
+        duo = False
+        passageiro = Passageiro.objects.filter(usuario=request.user.id).exists()
+        motorista = Motorista.objects.filter(usuario=request.user.id).exists()
+        if passageiro and motorista:
+            duo = True
+        form = TipoUsuarioForm(request.POST or None)
+        if request.POST and form.is_valid():
             tipo = form.cleaned_data.get('tipo')
-            if tipo:
-                registros = registros.filter(tipo=tipo)
-        depoimentos = paginar_registros(request, registros, 15)
-        # return render(request, 'comum/listagem_telediagnosticos.html', {'telediagnosticos': telediagnosticos, 'form': form})
-        return render(request, "inicio.html", {"depoimentos":depoimentos, "form":form})
+            request.session["tipo"] = "Motorista"
+            
+        return render(request, "inicio.html", {"form":form, "duo": duo})
     else:
         return HttpResponseRedirect(reverse('comum:login'))
 

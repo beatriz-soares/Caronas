@@ -68,9 +68,8 @@ class CaronaForm(forms.ModelForm):
 
         self.fields['ponto_embarque'].choices = lista
 
-
-class FiltroDepoimentoForm(forms.Form):
-    tipo = forms.ModelChoiceField(TipoDepoimentos.objects.all(), required=False)
+class TipoUsuarioForm(forms.Form):
+    tipo = forms.ChoiceField(choices=[(1,'Passageiro'), (2, 'Carona')], required=True, widget=forms.RadioSelect)
 
 class NovoTipoDepoimentoForm(forms.ModelForm):
     class Meta:
@@ -171,14 +170,15 @@ class NovoUserForm(forms.ModelForm):
         usuario.cidade = cidade
         usuario.save()
 
-        if '2' in tipo:
-            veiculo = Veiculo.objects.create(placa=placa_veiculo, cor=cor_veiculo, modelo=modelo_veiculo, ano=ano_veiculo)
-            motorista.usuario = usuario
-            motorista.veiculo = veiculo
-            motorista.save()
-        elif '1' in tipo:
-            passageiro.usuario = usuario
-            passageiro.save()
+        if len(tipo) == 1:
+            if '2' in tipo:
+                veiculo = Veiculo.objects.create(placa=placa_veiculo, cor=cor_veiculo, modelo=modelo_veiculo, ano=ano_veiculo)
+                motorista.usuario = usuario
+                motorista.veiculo = veiculo
+                motorista.save()
+            elif '1' in tipo:
+                passageiro.usuario = usuario
+                passageiro.save()
         else:
             veiculo = Veiculo.objects.create(placa=placa_veiculo, cor=cor_veiculo, modelo=modelo_veiculo, ano=ano_veiculo)
             motorista.usuario = usuario
